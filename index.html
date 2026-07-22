@@ -287,7 +287,7 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
           <div><b>Comforters / blankets</b><span class="sub">quoted separately by size</span></div>
           <div class="stepper" data-item="comforter"><button type="button" data-dir="-1" aria-label="Fewer">&minus;</button><span class="count">0</span><button type="button" data-dir="1" aria-label="More">+</button></div>
         </div>
-        <label class="est-delivery"><input type="checkbox" id="deliveryToggle"> Add pickup &amp; delivery (flat fee)</label>
+        <label class="est-delivery"><input type="checkbox" id="deliveryToggle"> Add pickup &amp; delivery</label>
       </div>
 
       <div class="est-result">
@@ -295,10 +295,10 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
         <p class="est-sub" id="estSub">~10 lbs, dropped off &amp; picked up in store</p>
         <ul class="est-lines">
           <li><span>Wash dry fold — <span id="lineLbs">10</span> lbs</span><b id="lineWdf">$12</b></li>
-          <li id="lineDeliveryRow" style="display:none"><span>Pickup &amp; delivery</span><b id="lineDelivery">$5&ndash;$7</b></li>
+          <li id="lineDeliveryRow" style="display:none"><span>Pickup &amp; delivery</span><b>based on distance</b></li>
           <li id="lineComforterRow" style="display:none"><span>Comforters</span><b>quoted separately</b></li>
         </ul>
-        <p class="est-sub" id="estAlt">With pickup &amp; delivery: $17&ndash;$19</p>
+        <p class="est-sub" id="estAlt">Pickup &amp; delivery adds a distance-based fee.</p>
         <a class="btn js-book" href="#">Book a Pickup</a>
         <p class="est-fine">Estimate only. Final price = actual clean, dry weight &times; $1.20. 10 lb minimum.</p>
       </div>
@@ -311,7 +311,7 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
     <h2>Services</h2>
     <div class="svc-grid">
       <div class="svc"><h3>Wash, Dry &amp; Fold</h3><p>No sorting. Detergent included.</p><span class="price">$1.20/lb · 10 lb minimum</span></div>
-      <div class="svc"><h3>Pickup &amp; Delivery</h3><p>Porch pickup, same or next day return.</p><span class="price">Flat $5&ndash;$7 per trip</span></div>
+      <div class="svc"><h3>Pickup &amp; Delivery</h3><p>Porch pickup, same or next day return.</p><span class="price">Delivery fee based on distance</span></div>
       <div class="svc"><h3>Self-Service</h3><p>30 &amp; 80 lb machines at two locations.</p><span class="price">Coin &amp; card</span></div>
       <div class="svc"><h3>Big &amp; Bulky</h3><p>Comforters, down bedding, washable rugs.</p><span class="price">Priced by size — ask</span></div>
       <div class="svc"><h3>Stuffed Animals &amp; Pet Beds</h3><p>Teddy bears to Great Dane beds, back fresh and fluffy.</p><span class="price">Small dog beds 2 for $10 · large from $10</span></div>
@@ -335,7 +335,7 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
         <li>Connelly Springs</li>
       </ul>
       <p class="small muted" style="margin-top:.8rem">Outside the route? Call or text <a href="tel:+18282010582">(828) 201-0582</a> or <a href="mailto:ferreelaundromat@gmail.com">email us</a> for more information. Drop-off is open to everyone.</p>
-      <p class="small muted" style="margin-top:.5rem"><b>Please note:</b> pickup &amp; delivery adds a flat $5&ndash;$7 fee on top of the per-pound price.</p>
+      <p class="small muted" style="margin-top:.5rem"><b>Please note:</b> pickup &amp; delivery adds an extra fee on top of the per-pound price, based on your distance from the shop.</p>
     </div>
     <div class="zip-box">
       <b>Check your zip before booking</b>
@@ -493,11 +493,11 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
 /* PLACEHOLDER: real Square booking URL. Every "Book a Pickup" button uses it. */
 var BOOKING_URL = "https://www.hannahswashdryfold.com/"; // PLACEHOLDER
 
-/* PLACEHOLDER PRICING — interview notes conflicted ($1.00 vs $1.20/lb; $5 vs $7 fee). */
+/* PLACEHOLDER PRICING — interview notes conflicted ($1.00 vs $1.20/lb).
+   The pickup/delivery fee depends on distance, so no dollar amount is
+   shown anywhere on the site — it's described as "based on distance". */
 var PRICE_PER_LB  = 1.20;
 var MINIMUM_LBS   = 10;
-var DELIVERY_LOW  = 5;
-var DELIVERY_HIGH = 7;
 
 /* PLACEHOLDER WEIGHTS — rough averages; refine with real order history. */
 var WEIGHTS = { basket: 15, bag: 12, xlbag: 25 };
@@ -560,24 +560,22 @@ function updateEstimate(){
   var billable = Math.max(lbs, MINIMUM_LBS);
   var wdf = billable * PRICE_PER_LB;
   var del = document.getElementById("deliveryToggle").checked;
-  var delLow = wdf + DELIVERY_LOW, delHigh = wdf + DELIVERY_HIGH;
-  var delRange = money(delLow) + "&ndash;" + money(delHigh);
 
-  /* Drop-off (cheaper) price leads; delivery shown second unless toggled on */
-  document.getElementById("estFigure").innerHTML = del ? delRange : money(wdf);
+  /* Delivery fee depends on distance, so it's never shown as a number —
+     the figure is always the wash-dry-fold cost, "+ delivery" when toggled */
+  document.getElementById("estFigure").innerHTML = money(wdf) + (del ? " <span style='font-size:1rem;font-weight:500'>+ delivery</span>" : "");
 
   var sub = "~" + billable + " lbs, " + (del ? "picked up & delivered" : "dropped off & picked up in store");
   if (lbs > 0 && lbs < MINIMUM_LBS) sub += " (10 lb minimum)";
   document.getElementById("estSub").textContent = sub;
 
-  document.getElementById("estAlt").innerHTML = del
-    ? "Drop-off only: " + money(wdf)
-    : "With pickup & delivery: " + delRange;
+  document.getElementById("estAlt").textContent = del
+    ? "The delivery fee depends on your distance — we'll confirm it when you book."
+    : "Pickup & delivery adds a distance-based fee.";
 
   document.getElementById("lineLbs").textContent = billable;
   document.getElementById("lineWdf").textContent = money(wdf);
   document.getElementById("lineDeliveryRow").style.display = del ? "flex" : "none";
-  document.getElementById("lineDelivery").innerHTML = money(DELIVERY_LOW) + "&ndash;" + money(DELIVERY_HIGH);
   document.getElementById("lineComforterRow").style.display = counts.comforter > 0 ? "flex" : "none";
 }
 
