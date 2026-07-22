@@ -256,12 +256,12 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
 
     <div class="tab-panel" id="panel-dropoff" role="tabpanel">
       <ol class="steps">
-        <li>Walk in during shop hours. No appointment — first come, first served.</li>
+        <li>Walk in during shop hours, or book a drop-off appointment. Walk-ins are first come, first served; appointments take precedence.</li>
         <li>Tell us any special instructions at the counter.</li>
         <li>We wash, dry, fold, and weigh it clean.</li>
         <li>Pick up same or next day. Pay by card or cash.</li>
       </ol>
-      <p class="note">Online booking is for pickup &amp; delivery only. Drop-off is always walk-in.</p>
+      <p class="note">No appointment needed to drop off — but appointments take precedence over walk-ins, so booking one gets you served first.</p>
     </div>
   </div>
 </section>
@@ -334,7 +334,8 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
         <li>Rutherford College</li>
         <li>Connelly Springs</li>
       </ul>
-      <p class="small muted" style="margin-top:.8rem">Outside the route? <a href="sms:+18282010582">Text us your address</a>. Drop-off is open to everyone.</p>
+      <p class="small muted" style="margin-top:.8rem">Outside the route? Call or text <a href="tel:+18282010582">(828) 201-0582</a> or <a href="mailto:ferreelaundromat@gmail.com">email us</a> for more information. Drop-off is open to everyone.</p>
+      <p class="small muted" style="margin-top:.5rem"><b>Please note:</b> pickup &amp; delivery adds a flat $5&ndash;$7 fee on top of the per-pound price.</p>
     </div>
     <div class="zip-box">
       <b>Check your zip before booking</b>
@@ -405,7 +406,7 @@ footer.site{background:var(--pink-tint);padding:44px 0 28px}
       </details>
       <details>
         <summary>Do I need an appointment to drop off?</summary>
-        <div class="a">No. Drop-off is walk-in only, first come first served. Online booking is just for pickup &amp; delivery.</div>
+        <div class="a">No — walk-ins are welcome, first come first served. You can also book a drop-off appointment, and appointments take precedence over walk-ins.</div>
       </details>
       <details>
         <summary>How do I pay?</summary>
@@ -610,7 +611,7 @@ document.getElementById("zipForm").addEventListener("submit", function(e){
     msg.innerHTML = "Yes — we deliver to " + zip + ". <a href=\"" + BOOKING_URL + "\" target=\"_blank\" rel=\"noopener\">Book a pickup</a>.";
   } else {
     msg.classList.add("no");
-    msg.innerHTML = "Outside our current route. <a href=\"sms:+18282010582\">Text us your address</a> — drop-off is always open.";
+    msg.innerHTML = "That zip is outside our current route — call or text <a href=\"tel:+18282010582\">(828) 201-0582</a> or <a href=\"mailto:ferreelaundromat@gmail.com\">email us</a> for more information.";
   }
 });
 
